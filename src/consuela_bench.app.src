@@ -1,0 +1,16 @@
+{application, consuela_bench, [
+    {description, "Benchmarking consuela performance"},
+    {vsn, "0"},
+    {registered, []},
+    {applications, [
+        kernel,
+        stdlib,
+        genlib,
+        consuela,
+        basho_bench
+    ]},
+    {env, []},
+    {modules, []},
+    {licenses, ["Apache 2.0"]},
+    {links, []}
+]}.

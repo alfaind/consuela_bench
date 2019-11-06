@@ -1,0 +1,40 @@
+version: '2.4'
+
+services:
+  consul1: &consul-server
+    image: consul:1.5.3
+    networks:
+      - consul
+    hostname: consul1
+    ports:
+      - "38501:8500"
+    command:
+      agent -server -retry-join consul0 -client 0.0.0.0
+
+  consul2:
+    <<: *consul-server
+    hostname: consul2
+    ports:
+      - "38502:8500"
+
+  consul0:
+    <<: *consul-server
+    hostname: consul0
+    ports:
+      - "38500:8500"
+    command:
+      agent -server -bootstrap-expect 3 -ui -client 0.0.0.0
+
+  runner:
+    image: erlang:21
+    networks:
+      - consul
+    volumes:
+      - ${PWD}:${PWD}
+    working_dir:
+      ${PWD}
+    command:
+      /usr/local/bin/epmd
+
+networks:
+  consul:
