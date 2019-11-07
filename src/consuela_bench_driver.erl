@@ -39,8 +39,8 @@ new({single_worker, N, _}) ->
             url   => "http://" ++ Host ++ ":" ++ integer_to_list(Port),
             opts  => genlib_map:compact(#{
                 acl            => basho_bench_config:get(consul_acl_token),
-                transport_opts => basho_bench_config:get(consul_client_transport_opts, #{})
-                % pulse          => {?MODULE, {client, N}}
+                transport_opts => basho_bench_config:get(consul_client_transport_opts, #{}),
+                pulse          => {?MODULE, {client, N}}
             })
         },
         registry  => #{
