@@ -2,14 +2,16 @@ version: '2.4'
 
 services:
   consul1: &consul-server
-    image: consul:1.5.3
+    image: consul:1.4.0
     networks:
       - consul
+    volumes:
+      - ./compose/consul.json:/etc/consul/consul.json
     hostname: consul1
     ports:
       - "38501:8500"
     command:
-      agent -server -retry-join consul0 -client 0.0.0.0
+      agent -config-dir=/etc/consul
 
   consul2:
     <<: *consul-server
@@ -22,8 +24,15 @@ services:
     hostname: consul0
     ports:
       - "38500:8500"
-    command:
-      agent -server -bootstrap-expect 3 -ui -client 0.0.0.0
+
+  metrics:
+    image: kamon/grafana_graphite
+    networks:
+      - consul
+    volumes:
+      - "./compose/statsd.js:/src/statsd/config.js"
+    ports:
+      - "8000:80"
 
   runner:
     image: erlang:21

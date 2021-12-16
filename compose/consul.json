@@ -1,0 +1,21 @@
+{
+    "server": true,
+    "ui": true,
+    "bind_addr": "0.0.0.0",
+    "client_addr": "0.0.0.0",
+    "bootstrap_expect": 3,
+    "retry_join": [
+        "consul0"
+    ],
+    "autopilot": {
+        "cleanup_dead_servers": false
+    },
+    "telemetry": {
+      "statsd_address": "metrics:8125",
+      "disable_hostname": true,
+      "prefix_filter": [
+        "-consul.health.service",
+        "-consul.http"
+      ]
+    }
+}
